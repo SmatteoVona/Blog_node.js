@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding-top: 50px; /* Spazio in alto per non sovrapporre il titolo e il form */
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 2em; /* Dimensione del titolo */
+    margin: 20px 0; /* Spazio sopra e sotto il titolo */
+  }
+  
+  form {
+    background: #fff;
+    padding: 15px;
+    margin: 0 auto; /* Centra il form nella pagina */
+    width: 90%; /* Larghezza del form adattabile */
+    max-width: 300px; /* Larghezza massima del form */
+    border-radius: 5px; /* Angoli leggermente arrotondati */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Ombra leggera per profondità */
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 8px;
+    margin-bottom: 10px; /* Spazio tra gli input */
+    width: calc(100% - 16px); /* Calcolo per considerare il padding */
+  }
+  
+  button {
+    background-color: #0084ff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    margin-top: 10px; /* Spazio sopra il pulsante */
+    width: 100%;
+  }
+  
+  button:hover {
+    background-color: #0069d9;
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+    font-size: 0.9em; /* Più piccolo del testo degli input */
+    margin: 10px 0; /* Spazio sopra e sotto il messaggio di errore */
+  }
+  

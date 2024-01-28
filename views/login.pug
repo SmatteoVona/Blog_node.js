@@ -1,0 +1,18 @@
+html
+  head
+    title Login
+    link(rel="stylesheet", href="/styles/style_login.css")
+  body
+    h1 Login
+    if error
+        //- è l'equivalente di scrivere <p class="error">Credenziali non valide</p>
+        p.error #{error}
+    form(action="/login", method="post")
+      div
+        label(for="username") Username
+        input(type="text", name="username", required)
+      div
+        label(for="password") Password
+        input(type="password", name="password", required)
+      div
+        button(type="submit") Login
