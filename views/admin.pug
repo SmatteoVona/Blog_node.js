@@ -12,7 +12,8 @@ block content
       div
         h3= post.title
         p= post.content
-        a(href='/admin/delete/' + post.id) Cancella
+        a(href= "/admin/elimina/" + post.id) Cancella
+        a(href= "/admin/modifica/" + post.id) Modifica 
 
   else
     p Nessun post presente

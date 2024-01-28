@@ -1,7 +1,10 @@
-extends layout
+html
+  head
+    title Aggiungi post
+    link(rel="stylesheet", href="/styles/style_inser-post.css")
+  body
+    h1 Aggiungi post
 
-block content
-  h2 Aggiungi Nuovo Post
   form(action='/admin/posts', method='POST')
     label(for='title') Titolo:
     input(type='text', id='title', name='title', required)

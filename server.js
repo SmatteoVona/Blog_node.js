@@ -72,6 +72,10 @@ app.get('/index', (req, res) => {
   res.render('index', { posts });
 });
 
+/*app.get('/modifica', (req, res) => {
+  res.render('modifica-post', { posts });
+});
+*/
 
 app.get('/posts/:id', (req, res) => {
   //postId ottiene il numero dell'id (se l'id fosse una stringa funzionerebbe comunque)
@@ -97,7 +101,7 @@ app.get('/admin/new', (req, res) => {
   res.render('add-post');
 });
 
-app.get('/admin/delete/:id', (req, res) => {
+app.get('/admin/elimina/:id', (req, res) => {
   const postId = parseInt(req.params.id);
   const postIndex = posts.findIndex(post => post.id === postId);
   //findIndex restituisce -1 se non è stata trovata alcuna corrispondenza
@@ -107,6 +111,36 @@ app.get('/admin/delete/:id', (req, res) => {
   }
   res.redirect('/admin');
 });
+
+app.get('/admin/modifica/:id', (req, res) => {
+  const postId = parseInt(req.params.id);
+  const post = posts.find(p => p.id === postId);
+  res.render('modifica-post', {post});
+})
+
+/*app.get('/admin/modifica/:id', (req, res) => {
+  const postId = parseInt(req.params.id);
+  const post = posts.find(p => p.id === postId);
+  if (post) {
+    res.render('modifica-post', { post });
+  } else {
+    res.status(404).send('Post non trovato');
+  }
+});*/
+
+
+app.post('/admin/modifica/:id', (req, res) => {
+  const postId = parseInt(req.params.id);
+  const { title, content } = req.body;
+  const postIndex = posts.findIndex(post => post.id === postId);
+
+  posts[postIndex].title = title;
+  posts[postIndex].content = content;
+  res.redirect('/admin');
+});
+
+
+
 
 
 app.listen(3000, () => {
