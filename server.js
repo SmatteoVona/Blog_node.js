@@ -1,16 +1,18 @@
 const express = require('express');
 const app = express();
+const fs = require("fs");
+//const multer = require("multer");
 const bodyParser = require('body-parser');
 
 app.set('view engine', 'pug');
 app.set('views', './views');
 
 // Dati del blog 
-const posts = [
+/*const posts = [
   { id: 1, title: 'casa', content: 'Contenuto del primo post. Contenuto del primo post. ' },
   { id: 2, title: 'macchina', content: 'Contenuto del secondo post. Contenuto del secondo post.' },
   // Aggiungi altri post se necessario...
-];
+];*/
 
 const admins = [
   { username: 'admin1', password: 'password1' },
@@ -23,15 +25,38 @@ const users = [
 ];
 
 
-app.use(express.static('public'));
+//PARTE PRESA DA SIMONE
+app.use(bodyParser.urlencoded({ extended: true }));
+/* gestione json  */
+const dati=read();
 
+function read() {
+  try {
+    const datiJson = fs.readFileSync("dati.json", 'utf-8');
+    // Converte il contenuto JSON in un oggetto JavaScript
+    return JSON.parse(datiJson);
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
+function write(datiJson) {//scrive nel file json con unaindendazione di uno spazio
+  fs.writeFileSync("dati.json", JSON.stringify(datiJson, null, 1), 'utf-8');
+}
+
+function save() {
+  write(dati);
+}
+
+//FINE PARTE DI SIMONE
+
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //app.get è per la ricezione di tipo get dal client
-
 //res.render è per inviare al client il file pug definito
-
-app.get('/', (req, res) => {
+app.get('/' , (req, res) => {
   res.render('login');
 });
 
@@ -42,8 +67,8 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
   /*req.body contiene tutti i valori passati dal body come oggetto sotto questa forma:
   {
-  username: 'valoreInserito',
-  password: 'valoreInserito'
+  username: 'usernameInserito',
+  password: 'passwordInserito'
 }
 poi vengono destrutturati
 */
@@ -65,22 +90,19 @@ poi vengono destrutturati
 });
 
 app.get('/admin', (req, res) => {
-  res.render('admin',{ posts });
+  res.render('admin',{ dati });
 });
 
 app.get('/index', (req, res) => {
-  res.render('index', { posts });
+  res.render('index', { dati });
 });
 
-/*app.get('/modifica', (req, res) => {
-  res.render('modifica-post', { posts });
-});
-*/
 
 app.get('/posts/:id', (req, res) => {
+  let post = dati.find(post => post.id == req.params.id);
   //postId ottiene il numero dell'id (se l'id fosse una stringa funzionerebbe comunque)
-  const postId = parseInt(req.params.id);
-  const post = posts.find(post => post.id === postId);
+  //const postId = parseInt(req.params.id);
+  //const post = posts.find(post => post.id === postId);
   res.render('post', { post });
 });
 
@@ -88,11 +110,13 @@ app.get('/posts/:id', (req, res) => {
 app.post('/admin/posts', (req, res) => {
   const { title, content } = req.body;
   const newPost = {
-    id: posts.length + 1,
+    id: dati.length + 1,
     title,
     content
   };
-  posts.push(newPost);
+  //non funziona, trovare come aggiungere su json
+  dati.push(newPost);
+  save();
   res.redirect('/');
 });
 
@@ -103,39 +127,32 @@ app.get('/admin/new', (req, res) => {
 
 app.get('/admin/elimina/:id', (req, res) => {
   const postId = parseInt(req.params.id);
-  const postIndex = posts.findIndex(post => post.id === postId);
+  const postIndex = dati.findIndex(post => post.id === postId);
+  /*const post = dati.find(p => p.id === postId);
+  const postIndex = dati.findIndex((post) => post.id === postId);*/
+  
   //findIndex restituisce -1 se non è stata trovata alcuna corrispondenza
   if (postIndex !== -1) {
     //splice elimina l'elemento dell'array alla posizione specificata
-    posts.splice(postIndex, 1);
+    dati.splice(postIndex, 1);
   }
   res.redirect('/admin');
 });
 
 app.get('/admin/modifica/:id', (req, res) => {
   const postId = parseInt(req.params.id);
-  const post = posts.find(p => p.id === postId);
+  const post = dati.find(p => p.id === postId);
   res.render('modifica-post', {post});
 })
-
-/*app.get('/admin/modifica/:id', (req, res) => {
-  const postId = parseInt(req.params.id);
-  const post = posts.find(p => p.id === postId);
-  if (post) {
-    res.render('modifica-post', { post });
-  } else {
-    res.status(404).send('Post non trovato');
-  }
-});*/
 
 
 app.post('/admin/modifica/:id', (req, res) => {
   const postId = parseInt(req.params.id);
   const { title, content } = req.body;
-  const postIndex = posts.findIndex(post => post.id === postId);
+  const postIndex = dati.findIndex(post => post.id === postId);
 
-  posts[postIndex].title = title;
-  posts[postIndex].content = content;
+  dati[postIndex].title = title;
+  dati[postIndex].content = content;
   res.redirect('/admin');
 });
 

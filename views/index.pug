@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  each post in posts
+  each post in dati
     div.post
       h2= post.title
       a(href='/posts/' + post.id) Leggi di più

@@ -6,9 +6,9 @@ block content
   // Link per aggiungere un nuovo post
   a(href='/admin/new') Aggiungi Nuovo Post
 
-  if posts.length > 0
+  if dati.length > 0
     // Elenco dei post con opzione di cancellazione
-    each post in posts
+    each post in dati
       div
         h3= post.title
         p= post.content
