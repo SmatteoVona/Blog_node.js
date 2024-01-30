@@ -1,11 +1,12 @@
 extends layout
 
 block content
-	if post
-		div
-			h2= post.title
-			p= post.content
-			a(href="/index") Home
-	else
-		p Post non trovato
-	
+    if post
+        div
+            h2= post.title
+            if post.imagePath
+                img(src='/' + post.imagePath alt='Immagine del Post')
+            p= post.content
+            a(href="/index") Home
+    else
+        p Post non trovato

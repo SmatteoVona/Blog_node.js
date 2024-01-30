@@ -5,11 +5,14 @@ html
   body
     h1 Aggiungi post
 
-  form(action='/admin/posts', method='POST')
-    label(for='title') Titolo:
-    input(type='text', id='title', name='title', required)
-    br
-    label(for='content') Contenuto:
-    textarea(id='content', name='content', required)
-    br
-    input(type='submit', value='Pubblica')
+    form(action='/admin/posts', method='POST', enctype='multipart/form-data')
+      label(for='title') Titolo:
+      input(type='text', id='title', name='title', required)
+      br
+      label(for='content') Contenuto:
+      textarea(id='content', name='content', required)
+      br
+      label(for='image') Immagine:
+      input(type='file', id='image', name='image')
+      br
+      input(type='submit', value='Pubblica')

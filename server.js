@@ -1,11 +1,23 @@
 const express = require('express');
 const app = express();
 const fs = require("fs");
-//const multer = require("multer");
+const path = require("path");
+const multer = require("multer");
 const bodyParser = require('body-parser');
 
 app.set('view engine', 'pug');
 app.set('views', './views');
+
+const RottaUploads = path.join(__dirname, "uploads");
+const RottaPublic = path.join(__dirname, "public");
+
+
+app.use(express.static(RottaPublic));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/uploads', express.static('uploads'));
+
+//app.use(express.static(RottaUploads));
 
 // Dati del blog 
 /*const posts = [
@@ -28,11 +40,11 @@ const users = [
 //PARTE PRESA DA SIMONE
 app.use(bodyParser.urlencoded({ extended: true }));
 /* gestione json  */
-const dati=read();
+const posts = read();
 
 function read() {
   try {
-    const datiJson = fs.readFileSync("dati.json", 'utf-8');
+    const datiJson = fs.readFileSync("posts.json", 'utf-8');
     // Converte il contenuto JSON in un oggetto JavaScript
     return JSON.parse(datiJson);
   } catch (error) {
@@ -42,21 +54,33 @@ function read() {
 }
 
 function write(datiJson) {//scrive nel file json con unaindendazione di uno spazio
-  fs.writeFileSync("dati.json", JSON.stringify(datiJson, null, 1), 'utf-8');
+  fs.writeFileSync("posts.json", JSON.stringify(datiJson, null, 1), 'utf-8');
 }
 
 function save() {
-  write(dati);
+  write(posts);
 }
+
+//setto lo storage
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, RottaUploads);//cartella di destinaizone
+  },
+  filename(req, file, cb) {
+    cb(null, Date.now() + "_" + file.originalname);//nome del file
+  }
+});
+const upload = multer({//inizializzazione dell'accesso allo storage
+  storage: storage
+});
+
 
 //FINE PARTE DI SIMONE
 
-app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: true }));
 
 //app.get è per la ricezione di tipo get dal client
 //res.render è per inviare al client il file pug definito
-app.get('/' , (req, res) => {
+app.get('/', (req, res) => {
   res.render('login');
 });
 
@@ -90,34 +114,31 @@ poi vengono destrutturati
 });
 
 app.get('/admin', (req, res) => {
-  res.render('admin',{ dati });
+  res.render('admin', { posts });
 });
 
 app.get('/index', (req, res) => {
-  res.render('index', { dati });
+  res.render('index', { posts });
 });
 
 
 app.get('/posts/:id', (req, res) => {
-  let post = dati.find(post => post.id == req.params.id);
-  //postId ottiene il numero dell'id (se l'id fosse una stringa funzionerebbe comunque)
-  //const postId = parseInt(req.params.id);
-  //const post = posts.find(post => post.id === postId);
+  let post = posts.find(post => post.id == req.params.id);
   res.render('post', { post });
 });
 
 
-app.post('/admin/posts', (req, res) => {
+app.post('/admin/posts', upload.single('image'), (req, res) => {
   const { title, content } = req.body;
   const newPost = {
-    id: dati.length + 1,
+    id: posts.length + 1,
     title,
-    content
+    content,
+    imagePath: req.file ? req.file.path : ''
   };
-  //non funziona, trovare come aggiungere su json
-  dati.push(newPost);
+  posts.push(newPost);
   save();
-  res.redirect('/');
+  res.redirect('/admin');
 });
 
 
@@ -127,36 +148,37 @@ app.get('/admin/new', (req, res) => {
 
 app.get('/admin/elimina/:id', (req, res) => {
   const postId = parseInt(req.params.id);
-  const postIndex = dati.findIndex(post => post.id === postId);
-  /*const post = dati.find(p => p.id === postId);
-  const postIndex = dati.findIndex((post) => post.id === postId);*/
-  
+  const postIndex = posts.findIndex(post => post.id === postId);
   //findIndex restituisce -1 se non è stata trovata alcuna corrispondenza
   if (postIndex !== -1) {
     //splice elimina l'elemento dell'array alla posizione specificata
-    dati.splice(postIndex, 1);
+    posts.splice(postIndex, 1);
+    save();
   }
   res.redirect('/admin');
 });
 
 app.get('/admin/modifica/:id', (req, res) => {
   const postId = parseInt(req.params.id);
-  const post = dati.find(p => p.id === postId);
-  res.render('modifica-post', {post});
+  const post = posts.find(p => p.id === postId);
+  res.render('modifica-post', { post });
 })
 
-
-app.post('/admin/modifica/:id', (req, res) => {
+//CONTROLLARE LA MODIFICA
+app.post('/admin/modifica/:id', upload.single('image'), (req, res) => {
   const postId = parseInt(req.params.id);
   const { title, content } = req.body;
-  const postIndex = dati.findIndex(post => post.id === postId);
-
-  dati[postIndex].title = title;
-  dati[postIndex].content = content;
-  res.redirect('/admin');
+  const postIndex = posts.findIndex(post => post.id === postId);
+  if (postIndex !== -1) {
+    posts[postIndex].title = title;
+    posts[postIndex].content = content;
+    if (req.file) {
+        posts[postIndex].imagePath = req.file.path;
+    }
+    save();
+}
+res.redirect('/admin');
 });
-
-
 
 
 
