@@ -15,9 +15,8 @@ const RottaPublic = path.join(__dirname, "public");
 app.use(express.static(RottaPublic));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/uploads', express.static('uploads'));
 
-//app.use(express.static(RottaUploads));
+app.use(express.static(RottaUploads));
 
 // Dati del blog 
 /*const posts = [
@@ -128,18 +127,7 @@ app.get('/posts/:id', (req, res) => {
 });
 
 
-app.post('/admin/posts', upload.single('image'), (req, res) => {
-  const { title, content } = req.body;
-  const newPost = {
-    id: posts.length + 1,
-    title,
-    content,
-    imagePath: req.file ? req.file.path : ''
-  };
-  posts.push(newPost);
-  save();
-  res.redirect('/admin');
-});
+
 
 
 app.get('/admin/new', (req, res) => {
@@ -163,7 +151,19 @@ app.get('/admin/modifica/:id', (req, res) => {
   const post = posts.find(p => p.id === postId);
   res.render('modifica-post', { post });
 })
-
+app.post('/admin/posts', upload.single('image'), (req, res) => {
+  const { title, content } = req.body;
+  const newPost = {
+    id: posts.length + 1,
+    title,
+    content,
+    imagePath: req.file ? req.file.filename : ''
+  };
+  posts.push(newPost);
+  //console.log(req.file.filename);
+  save();
+  res.redirect('/admin');
+});
 //CONTROLLARE LA MODIFICA
 app.post('/admin/modifica/:id', upload.single('image'), (req, res) => {
   const postId = parseInt(req.params.id);
@@ -173,7 +173,9 @@ app.post('/admin/modifica/:id', upload.single('image'), (req, res) => {
     posts[postIndex].title = title;
     posts[postIndex].content = content;
     if (req.file) {
-        posts[postIndex].imagePath = req.file.path;
+        //posts[postIndex].imagePath = req.file.path;
+        posts[postIndex].imagePath = req.file.filename;
+
     }
     save();
 }

@@ -1,20 +1,44 @@
 [
  {
   "id": 1,
-  "title": "1",
-  "content": "a",
+  "title": "Barzelletta 1",
+  "content": "La prima parola pronunciata da Chuck Norris da piccolo, è stata “Chuck”. La seconda “Norris”. La terza non c’è mai stata. Da quel giorno, Chuck Norris si esprime a calci rotanti.",
+  "imagePath": ""
+ },
+ {
+  "id": 2,
+  "title": "Barzelletta 2",
+  "content": "Quando Chuck Norris parla a Vanvera, Vanvera risponde.",
   "imagePath": ""
  },
  {
   "id": 3,
-  "title": "3",
-  "content": "3",
+  "title": "Barzelletta 3",
+  "content": "Quando Chuck Norris fa le flessioni, non alza se stesso, abbassa la Terra.",
   "imagePath": ""
  },
  {
-  "id": 3,
-  "title": "5",
-  "content": "5",
-  "imagePath": "C:\\Users\\matte\\OneDrive\\Documenti\\Scuola\\5D\\TPD\\Blog express\\blog\\uploads\\1706635741975_Tiramisu-senza-uova-3-720x960.jpg"
+  "id": 4,
+  "title": "Barzelletta 4",
+  "content": "Chuck Norris ha ucciso cinquanta uomini con una granata. Poi ha fatto esplodere la granata.",
+  "imagePath": ""
+ },
+ {
+  "id": 5,
+  "title": "Barzelletta 5",
+  "content": "Dio chiese 10 giorni per la creazione, ma Chuck Norris gliene concesse 6.",
+  "imagePath": ""
+ },
+ {
+  "id": 6,
+  "title": "Barzelletta 6",
+  "content": "Quando Chuck Norris scherza con il fuoco, il fuoco ride.",
+  "imagePath": ""
+ },
+ {
+  "id": 7,
+  "title": "Barzelletta 7",
+  "content": "Berlusconi sta viaggiando in macchina con il suo autista, quando ad un tratto la macchina si blocca. Berlusconi, insieme all'autista scendono preoccupati della macchina, quando si accorgono di avere preso sotto un maiale di un fattore lì vicino. Berlusconi dice all'autista: 'Vai dal fattore e digli che abbiamo ucciso il maiale; però pagalo quanto vuoi perché se lo vengono a sapere quelli della sinistra non mi lasceranno tregua'. Dopo un po' di tempo l'autista torna dalla fattoria pieno di formaggi e di salumi. Berlusconi chiede all'autista: 'Ma cosa hai detto al fattore?' e l'autista risponde: 'Niente, gli ho solo detto che sono l'autista di Berlusconi e che l'ho ammazzato io il porco'.",
+  "imagePath": "1706734417194_berlusconi-brinda.webp"
  }
 ]
