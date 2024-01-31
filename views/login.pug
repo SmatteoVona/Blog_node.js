@@ -1,8 +1,9 @@
-html
-  head
-    title Login
-    link(rel="stylesheet", href="/styles/style_login.css")
-  body
+extends layout
+
+block head
+  link(rel="stylesheet", href="/styles/login.css")
+
+block content
     h1 Login
     if error
         //- è l'equivalente di scrivere <p class="error">Credenziali non valide</p>

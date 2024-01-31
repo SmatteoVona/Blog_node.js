@@ -1,8 +1,9 @@
-html
-  head
-    title Aggiungi post
-    link(rel="stylesheet", href="/styles/style_inser-post.css")
-  body
+extends layout
+
+block head
+  link(rel="stylesheet", href="/styles/modifica_post.css")
+
+block content
     h1 Aggiungi post
 
     form(action='/admin/posts', method='POST', enctype='multipart/form-data')

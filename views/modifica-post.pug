@@ -1,9 +1,9 @@
-html
-  head
-    title Modifica post
-    link(rel="stylesheet", href="/styles/style_inser-post.css")
-  body
-    h1 Modifica post
+extends layout
+
+block head
+  link(rel="stylesheet", href="/styles/modifica_post.css")
+
+block content
 
     form(action='/admin/modifica/' + post.id, method='POST', enctype='multipart/form-data')
       label(for='title') Titolo:
