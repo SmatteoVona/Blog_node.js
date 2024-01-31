@@ -15,9 +15,8 @@ const RottaPublic = path.join(__dirname, "public");
 app.use(express.static(RottaPublic));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/uploads', express.static('uploads'));
 
-//app.use(express.static(RottaUploads));
+app.use(express.static(RottaUploads));
 
 // Dati del blog 
 /*const posts = [
@@ -134,9 +133,10 @@ app.post('/admin/posts', upload.single('image'), (req, res) => {
     id: posts.length + 1,
     title,
     content,
-    imagePath: req.file ? req.file.path : ''
+    imagePath: req.file ? req.file.filename : ''
   };
   posts.push(newPost);
+  //console.log(req.file.filename);
   save();
   res.redirect('/admin');
 });
