@@ -127,7 +127,19 @@ app.get('/posts/:id', (req, res) => {
 });
 
 
-
+app.post('/admin/posts', upload.single('image'), (req, res) => {
+  const { title, content } = req.body;
+  const newPost = {
+    id: posts.length + 1,
+    title,
+    content,
+    imagePath: req.file ? req.file.filename : ''
+  };
+  posts.push(newPost);
+  //console.log(req.file.filename);
+  save();
+  res.redirect('/admin');
+});
 
 
 app.get('/admin/new', (req, res) => {
